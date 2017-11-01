@@ -1,0 +1,1 @@
+https://github.com/KnpLabs/KnpPaginatorBundle/blob/master/Resources/doc/custom_pagination_subscribers.md
