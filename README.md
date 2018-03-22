@@ -11,7 +11,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
  
 	
-	$ composer require kitlabs/kit-pay-bundle
+	$ composer require kitlabs/kit-paginator-bundle
 
  
 This command requires you to have Composer installed globally, as explained
