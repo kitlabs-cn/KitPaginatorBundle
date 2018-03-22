@@ -1,0 +1,27 @@
+{
+	"name": "kitlabs/kit-paginator-bundle",
+	"type": "symfony-bundle",
+	"description": "Support Native Sql Query for KnpPaginatorBundle",
+	"keywords": ["Paginator bundle","Paginator", "kitlabs", "kit-paginator-bundle"],
+	"homepage": "https://github.com/kitlabs-cn/KitPaginatorBundle",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "lcp0578",
+			"email": "lcp0578@gmail.com",
+			"homepage": "https://github.com/lcp0578"
+		},
+		{
+			"name": "The contributors",
+			"homepage": "https://github.com/kitlabs-cn/KitPaginatorBundle/contributors"
+		}
+	],
+	"support": {
+		"email": "lcp0578@gmail.com"
+	},
+	"autoload": {
+		 "psr-4": {
+            "Kit\\PaginatorBundle\\": ""
+        }
+	}
+}
