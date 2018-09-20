@@ -24,53 +24,37 @@ class PaginatorService
         $this->requestStack = $requestStack;
     }
 
-    function paginate($query, $page, $pagesize, $connection = null)
+    function paginate($query, $page, $pagesize, $connection = null, $total = null)
     {
         $request = $this->requestStack->getCurrentRequest();
         if ($connection instanceof Connection) {
             $this->connection = $connection;
         }
         $offset = ($page - 1) * $pagesize;
-        $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
-        $total = $this->connection->executeQuery($countQuery)->fetchColumn(0);
+        if(is_null($total) || $total < 1){
+            $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
+            $total = $this->connection->executeQuery($countQuery)->fetchColumn(0);
+        }
         $pages = intval(ceil($total / $pagesize));
         $query .= ' LIMIT ' . $offset . ',' . $pagesize;
         $list = $this->connection->executeQuery($query)->fetchAll();
-        $pageInRange = [];
-        if ($page < $pages) {
-            for ($i = 0; $i < 8; $i ++) {
-                if ($page + $i > $pages)
-                    break;
-                array_push($pageInRange, $page + $i);
-            }
-        } else {
-            for ($i = 0; $i < 8; $i ++) {
-                if ($page - $i < 1)
-                    break;
-                array_unshift($pageInRange, $page - $i);
-            }
-        }
-        $pageData = [
-            'items' => $list,
-            'pageParameterName' => 'page',
-            "current" => $page,
-            "numItemsPerPage" => $pagesize,
-            "pageCount" => $pages,
-            "totalCount" => $total,
-            "pageRange" => count($pageInRange),
-            "pagesInRange" => $pageInRange,
-            "startPage" => min($pageInRange),
-            "endPage" => max($pageInRange),
-            "currentItemCount" => count($list),
-            "route" => $request->get('_route'),
-            "query" => $request->query->all()
-        ];
-        if ($page - 1 > 0) {
-            $pageData['previous'] = $page - 1;
-        }
-        if ($page + 1 < $pages) {
-            $pageData['next'] = $page + 1;
-        }
-        return $pageData;
+        $slidingPagination = new SlidingPagination($request->query->all());
+        $slidingPagination->setCurrentPageNumber($page);
+        $slidingPagination->setItemNumberPerPage($pagesize);
+        $slidingPagination->setItems($list);
+        $slidingPagination->setUsedRoute($request->get('_route'));
+        $slidingPagination->setTotalItemCount($total);
+        $slidingPagination->setPageRange(10);
+        $slidingPagination->setPaginatorOptions([
+            "pageParameterName" => "page",
+            "sortFieldParameterName" => "sort",
+            "sortDirectionParameterName" => "direction",
+            "filterFieldParameterName" => "filterField",
+            "filterValueParameterName" => "filterValue",
+            "distinct" => true
+        ]);
+        $slidingPagination->setCustomParameters([]);
+        $slidingPagination->setTemplate('pagination.html.twig');
+        return $slidingPagination;
     }
 }
