@@ -2,7 +2,7 @@ services:
 #    kit_paginator.example:
 #        class: Kit\PaginatorBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
-    kit_paginator.paginator:
+    kit_paginator:
         class: Kit\PaginatorBundle\Service\PaginatorService
         arguments: ["@doctrine.dbal.default_connection", "@request_stack"]
     twig.extension.pagination_extension:

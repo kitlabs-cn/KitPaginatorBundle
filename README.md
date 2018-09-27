@@ -48,3 +48,6 @@ in the `app/AppKernel.php` file of your project:
 
 	# config.yml
 ## Usage
+
+	$paginator = $this->get('kit_paginator');
+    $pagination = $paginator->paginate($query, $page, $pagesize, $connection = null, $total = null);

@@ -1,3 +1,0 @@
-kit_paginator_homepage:
-    path:     /
-    defaults: { _controller: KitPaginatorBundle:Default:index }

@@ -3,6 +3,7 @@ namespace Kit\PaginatorBundle\Service;
 
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Knp\Component\Pager\Pagination\SlidingPagination;
 
 class PaginatorService
 {
@@ -35,14 +36,12 @@ class PaginatorService
             $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
             $total = $this->connection->executeQuery($countQuery)->fetchColumn(0);
         }
-        $pages = intval(ceil($total / $pagesize));
         $query .= ' LIMIT ' . $offset . ',' . $pagesize;
         $list = $this->connection->executeQuery($query)->fetchAll();
         $slidingPagination = new SlidingPagination($request->query->all());
         $slidingPagination->setCurrentPageNumber($page);
         $slidingPagination->setItemNumberPerPage($pagesize);
         $slidingPagination->setItems($list);
-        $slidingPagination->setUsedRoute($request->get('_route'));
         $slidingPagination->setTotalItemCount($total);
         $slidingPagination->setPageRange(10);
         $slidingPagination->setPaginatorOptions([
@@ -54,7 +53,6 @@ class PaginatorService
             "distinct" => true
         ]);
         $slidingPagination->setCustomParameters([]);
-        $slidingPagination->setTemplate('pagination.html.twig');
         return $slidingPagination;
     }
 }
