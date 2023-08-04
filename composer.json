@@ -23,7 +23,7 @@
 		"email" : "lcp0578@gmail.com"
 	},
 	"require" : {
-		"knplabs/knp-paginator-bundle" : "^2.8"
+		"knplabs/knp-paginator-bundle" : "^5.9"
 	},
 	"autoload" : {
 		"psr-4" : {
