@@ -43,7 +43,7 @@ class PaginationExtension implements \Twig\Extension\ExtensionInterface
 	public function getFunctions()
 	{
 		return array(
-				new \TwigFunction('kit_pagination_render', array($this, 'render'), array('is_safe' => array('html'), 'needs_environment' => true)),
+				new \Twig\TwigFunction('kit_pagination_render', array($this, 'render'), array('is_safe' => array('html'), 'needs_environment' => true)),
 		);
 	}
 	
@@ -58,7 +58,7 @@ class PaginationExtension implements \Twig\Extension\ExtensionInterface
 	 *
 	 * @return string
 	 */
-	public function render(\Twig_Environment $env, $pagination, $template = null, array $queryParams = array(), array $viewParams = array())
+	public function render(\Twig\Environment $env, $pagination, $template = null, array $queryParams = array(), array $viewParams = array())
 	{
 		$pagination['query'] = array_merge($pagination['query'], $queryParams);
 		return $env->render( $template, array_merge($pagination, $viewParams));
